@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.201" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.duck.gui.Controller">
+    <top>
+        <HBox>
+            <HBox alignment="CENTER_LEFT" spacing="5.0">
+                <ImageView fitHeight="40" fitWidth="40">
+                    <Image url="@../cross.png" />
+                </ImageView>
+                <Label>SNMP-Scanner</Label>
+                <HBox.margin>
+                    <Insets left="20.0" />
+                </HBox.margin>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="251.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label>Range: </Label>
+                <TextField fx:id="txt_Address" prefHeight="25.0" prefWidth="203.0" promptText="192.168.1.0/24" />
+                <Button fx:id="btn_Scan" mnemonicParsing="false" prefWidth="90.0" text="Scan" />
+                <HBox.margin>
+                   <Insets right="20.0" />
+                </HBox.margin>
+            </HBox>
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
+        </HBox>
+    </top>
+    <center>
+
+    </center>
+</BorderPane>
