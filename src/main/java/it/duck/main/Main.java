@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.soulwing.snmp.*;
 
 public class Main extends Application {
 
@@ -18,6 +19,26 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        launch(args);
+        try {
+            Mib mib = MibFactory.getInstance().newMib();
+            mib.load("SNMPv2-MIB");
+
+            SimpleSnmpV2cTarget target = new SimpleSnmpV2cTarget();
+            target.setAddress("192.168.1.30");
+            target.setCommunity("public");
+
+            SnmpContext context = SnmpFactory.getInstance().newContext(target, mib);
+            try {
+                VarbindCollection result = context.getNext("sysUpTime").get();
+                System.out.println("System-Up-Time: " + result.get("sysUpTime"));
+            }
+            finally {
+                context.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
+// launch(args);
