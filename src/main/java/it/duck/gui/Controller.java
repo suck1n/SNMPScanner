@@ -1,4 +1,4 @@
-package it.duck.main;
+package it.duck.gui;
 
 public class Controller {
 }
