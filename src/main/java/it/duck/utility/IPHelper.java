@@ -7,7 +7,12 @@ public class IPHelper {
     public static ArrayList<String> calculateNetwork(String ip, int mask) {
         String lastIP = getLastIP(ip, mask);
 
-        int[] ipParts = getIPParts(ip);
+        return calculateNetwork(ip, lastIP);
+    }
+
+    public static ArrayList<String> calculateNetwork(String startIP, String lastIP) {
+
+        int[] ipParts = getIPParts(startIP);
         int[] lastIPParts = getIPParts(lastIP);
 
         ArrayList<String> ips = new ArrayList<>();
@@ -20,7 +25,6 @@ public class IPHelper {
                 }
             }
         }
-
         return ips;
     }
 

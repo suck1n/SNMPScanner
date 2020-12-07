@@ -14,7 +14,7 @@ import java.util.List;
 
 public class StandardSettings {
 
-    private static Mib defaultMib;
+    private static final Mib defaultMib;
 
     static {
         defaultMib = MibFactory.getInstance().newMib();
@@ -48,7 +48,11 @@ public class StandardSettings {
         return communities;
     }
 
-    public static Mib getMIBs(List<String> customMibs) {
+    public static Mib getMIB() {
+        return defaultMib;
+    }
+
+    public static Mib getMIB(List<String> customMibs) {
         if(customMibs != null && !customMibs.isEmpty()) {
             for(String m : customMibs) {
                 try {
@@ -62,10 +66,11 @@ public class StandardSettings {
         return defaultMib;
     }
 
-    public static List<String> getOIDS() {
+    public static List<String> getOIDs() {
         List<String> oids = new ArrayList<>();
         oids.add("sysUpTime");
         oids.add("sysName");
+        oids.add("sysDescr");
         oids.add("ipAdEntAddr");
 
         return oids;
