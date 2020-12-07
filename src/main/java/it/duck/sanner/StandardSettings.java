@@ -41,6 +41,10 @@ public class StandardSettings {
         }
     }
 
+    /**
+     * Gibt die Standard Communities [public, private] zurück
+     * @return Die Communities
+     */
     public static List<String> getCommunities() {
         List<String> communities = new ArrayList<>();
         communities.add("public");
@@ -48,10 +52,19 @@ public class StandardSettings {
         return communities;
     }
 
+    /**
+     * Gibt ein Standard MIB-Object zurück
+     * @return Das MIB-Objekt
+     */
     public static Mib getMIB() {
         return defaultMib;
     }
 
+    /**
+     * Gibt das Standard MIB-Objekt zurück bei dem auch die <code>customMibs</code> geladen wurden
+     * @param customMibs Liste der benutzerdefinierten MIBs
+     * @return Das MIB-Objekt
+     */
     public static Mib getMIB(List<String> customMibs) {
         if(customMibs != null && !customMibs.isEmpty()) {
             for(String m : customMibs) {
@@ -66,6 +79,10 @@ public class StandardSettings {
         return defaultMib;
     }
 
+    /**
+     * Gibt die Standard OIDs [sysUpTime, sysName, sysDecr, ipAdEntAddr] zurück
+     * @return Die OIDs
+     */
     public static List<String> getOIDs() {
         List<String> oids = new ArrayList<>();
         oids.add("sysUpTime");

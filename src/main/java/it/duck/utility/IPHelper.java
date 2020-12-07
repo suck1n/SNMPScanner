@@ -4,12 +4,27 @@ import java.util.ArrayList;
 
 public class IPHelper {
 
+
+    /**
+     * Berechnet alle IPs des Netzwerkes <code>ip</code> mithilfe der Maske
+     *
+     * @param ip Die IP
+     * @param mask Die Maske
+     * @return Alle IPs des Netzwerkes
+     */
     public static ArrayList<String> calculateNetwork(String ip, int mask) {
         String lastIP = getLastIP(ip, mask);
 
         return calculateNetwork(ip, lastIP);
     }
 
+    /**
+     * Berechnet alle IPs zwischen der <code>startIP</code> und der <code>lastIP</code>
+     *
+     * @param startIP Die Start-IP
+     * @param lastIP Die letzte IP
+     * @return Alle IPs zwischen den IPs
+     */
     public static ArrayList<String> calculateNetwork(String startIP, String lastIP) {
 
         int[] ipParts = getIPParts(startIP);

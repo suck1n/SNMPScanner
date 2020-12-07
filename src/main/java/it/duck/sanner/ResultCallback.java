@@ -6,6 +6,10 @@ public class ResultCallback implements SnmpCallback<VarbindCollection> {
 
     private final String community;
 
+    /**
+     * Erstellt einen Callback welcher die Resultate, mit der Community, in der Konsole ausgibt
+     * @param community Die Community von der die Resultate kommen
+     */
     public ResultCallback(String community) {
         this.community = community;
     }
