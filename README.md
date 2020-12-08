@@ -7,9 +7,12 @@ Das Programm braucht lediglich nur die Bibliothek
 <a href="https://github.com/soulwingtnm4j">tnm4j</a>. <br>
 Es wurde die Java Version 8 genutzt und die tnm4j Version 11.
 
-## Installation
-Zum Installieren bzw. starten des Programmes muss Java 8 auf dem Rechner
-installiert sein und dann genügt es die `Scanner.jar` auszuführen.
+## Installation/Start
+Zum Installieren muss einfach die `SNMPScanner.jar` Datei im Release Commit
+heruntergeladen werden. Dann um das Programm zu starten muss Java 8 auf dem Rechner
+installiert sein. Letztendlich genügt es die `SNMPScanner.jar` Datei mit einem 
+Doppelklick zu starten oder den Befehl `java -jar SNMPScanner.jar` in der Konsole 
+auszuführen.
 
 # SNMP Scanner
 ##Status
