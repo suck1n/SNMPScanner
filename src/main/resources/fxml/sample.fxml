@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import it.duck.gui.elements.IPField?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.duck.gui.Controller">
+<?import java.lang.*?>
+<BorderPane prefHeight="700.0" prefWidth="1200.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.duck.gui.Controller">
     <top>
         <HBox alignment="CENTER_LEFT" spacing="5.0">
             <ImageView fitHeight="40" fitWidth="40">
@@ -21,35 +23,33 @@
         <TabPane nodeOrientation="LEFT_TO_RIGHT" tabClosingPolicy="UNAVAILABLE">
             <Tab text="Scan">
                 <VBox>
-
                     <HBox spacing="10.0" HBox.hgrow="ALWAYS">
-                        <Label prefWidth="60">Network: </Label>
-                        <TextField fx:id="txt_Address" prefWidth="36.0" promptText="192" />
-                        <Label>.</Label>
-                        <TextField prefWidth="36.0" promptText="168" />
-                        <Label>.</Label>
-                        <TextField prefWidth="36.0" promptText="1" />
-                        <Label>.</Label>
-                        <TextField prefWidth="36.0" promptText="0" />
-                        <Label>/</Label>
-                        <TextField prefHeight="25.0" prefWidth="30.0" promptText="24" />
-                        <Button fx:id="btn_Scan" mnemonicParsing="false" prefWidth="90.0" text="Scan" />
-                        <CheckBox>Custom Range</CheckBox>
+                        <ComboBox fx:id="combo_IP" onAction="#on_ComboIP_Change" prefWidth="150.0" />
+                        <IPField fx:id="startAddress" maskEnabled="true">
+                            <promptTexts>
+                                <String fx:value="192" />
+                                <String fx:value="168" />
+                                <String fx:value="0" />
+                                <String fx:value="1" />
+                                <String fx:value="32" />
+                            </promptTexts>
+                        </IPField>
+                        <Button fx:id="btn_Scan" onAction="#on_Scan_Click" prefWidth="90.0" text="Scan" />
                         <padding>
                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                         </padding>
                     </HBox>
-                    <HBox spacing="10.0" HBox.hgrow="ALWAYS">
-                        <Label prefWidth="60">End-IP: </Label>
-                        <TextField prefWidth="36.0" promptText="192" />
-                        <Label>.</Label>
-                        <TextField prefWidth="36.0" promptText="168" />
-                        <Label>.</Label>
-                        <TextField prefWidth="36.0" promptText="1" />
-                        <Label>.</Label>
-                        <TextField prefWidth="36.0" promptText="0" />
+                    <HBox fx:id="endIPBox" spacing="10.0" HBox.hgrow="ALWAYS">
+                        <IPField fx:id="endAddress" visible="false">
+                            <promptTexts>
+                                <String fx:value="192" />
+                                <String fx:value="168" />
+                                <String fx:value="0" />
+                                <String fx:value="1" />
+                            </promptTexts>
+                        </IPField>
                         <padding>
-                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            <Insets bottom="10.0" left="170.0" right="10.0" top="10.0" />
                         </padding>
                     </HBox>
                     <Label>
@@ -75,7 +75,7 @@
                     </CheckBox>
                     <HBox spacing="10" HBox.hgrow="ALWAYS">
                         <Label>Port Number: </Label>
-                        <TextField promptText="162"/>
+                        <TextField promptText="162" />
                         <padding>
                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                         </padding>

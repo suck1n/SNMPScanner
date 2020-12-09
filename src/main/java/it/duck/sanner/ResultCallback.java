@@ -25,7 +25,7 @@ public class ResultCallback implements SnmpCallback<VarbindCollection> {
                 System.out.println("\t- " + varbind.getName() + " = " + varbind);
             }
         } catch (TimeoutException ignore) {
-            System.out.println("No Response from " + ip);
+            System.out.println("No Response from " + ip + " on community " + community);
         } finally {
             e.getContext().close();
         }

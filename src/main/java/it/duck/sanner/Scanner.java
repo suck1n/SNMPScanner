@@ -1,17 +1,14 @@
 package it.duck.sanner;
 
 import it.duck.utility.IPHelper;
-import org.soulwing.snmp.Mib;
-import org.soulwing.snmp.SimpleSnmpV2cTarget;
-import org.soulwing.snmp.SnmpContext;
-import org.soulwing.snmp.SnmpFactory;
+import org.soulwing.snmp.*;
 
 import java.util.List;
 
 public class Scanner {
 
     /**
-     * Scant ein ganzes Netzwerk von der Start-IP {<code>ip</code>}
+     * Scannt ein ganzes Netzwerk von der Start-IP {<code>ip</code>}
      * bis hin zur Broadcast-IP welche mittels der Maske berechnet wird.<br>
      * <br>
      * <strong><i>Example</i></strong>
@@ -42,7 +39,7 @@ public class Scanner {
     }
 
     /**
-     * Scant ein ganzes Netzwerk von der Start-IP <code>startIP</code>
+     * Scannt ein ganzes Netzwerk von der Start-IP <code>startIP</code>
      * bis hin zur End-IP <code>endIP</code>.<br>
      * <br>
      * <strong><i>Example</i></strong>
@@ -73,7 +70,7 @@ public class Scanner {
     }
 
     /**
-     * Scant eine einzelne IP.<br>
+     * Scannt eine einzelne IP.<br>
      * <br>
      * <strong><i>Example</i></strong>
      * <br><br>
@@ -90,23 +87,20 @@ public class Scanner {
             throw new IllegalArgumentException("IP cannot be empty!");
         }
 
-        if(communities == null || communities.isEmpty()) {
-            communities = StandardSettings.getCommunities();
-        }
-
-        if(oids == null || oids.isEmpty()) {
-            oids = StandardSettings.getOIDs();
-        }
-
+        communities = StandardSettings.getCommunities(communities);
+        oids = StandardSettings.getOIDs(oids);
         Mib mib = StandardSettings.getMIB(mibs);
 
         SimpleSnmpV2cTarget target = new SimpleSnmpV2cTarget();
         target.setAddress(ip);
 
+        SimpleSnmpTargetConfig config = new SimpleSnmpTargetConfig();
+        config.setTimeout(2000);
+
         for(String community : communities) {
             target.setCommunity(community);
 
-            SnmpContext context = SnmpFactory.getInstance().newContext(target, mib);
+            SnmpContext context = SnmpFactory.getInstance().newContext(target, mib, config, null);
             context.asyncGetNext(new ResultCallback(community), oids);
         }
     }

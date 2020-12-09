@@ -42,14 +42,25 @@ public class StandardSettings {
     }
 
     /**
+     * Gibt die angegebenen Communities und die Standard Communities zurück
+     * @param communities Benutzerdefinierte Communities
+     * @return Alle Communities
+     */
+    public static List<String> getCommunities(List<String> communities) {
+        if(communities == null) {
+            communities = new ArrayList<>();
+        }
+        communities.add("public");
+        communities.add("private");
+        return communities;
+    }
+
+    /**
      * Gibt die Standard Communities [public, private] zurück
      * @return Die Communities
      */
     public static List<String> getCommunities() {
-        List<String> communities = new ArrayList<>();
-        communities.add("public");
-        communities.add("private");
-        return communities;
+        return getCommunities(null);
     }
 
     /**
@@ -80,16 +91,28 @@ public class StandardSettings {
     }
 
     /**
-     * Gibt die Standard OIDs [sysUpTime, sysName, sysDecr, ipAdEntAddr] zurück
+     * Gibt die angegebene OIDs, sowie die standard OIDs zurück
+     * @param oids Benutzerdefinierte OIDs
      * @return Die OIDs
      */
-    public static List<String> getOIDs() {
-        List<String> oids = new ArrayList<>();
-        oids.add("sysUpTime");
+    public static List<String> getOIDs(List<String> oids) {
+        if(oids == null) {
+            oids = new ArrayList<>();
+        }
+
         oids.add("sysName");
+        oids.add("sysUpTime");
         oids.add("sysDescr");
         oids.add("ipAdEntAddr");
 
         return oids;
+    }
+
+    /**
+     * Gibt die Standard OIDs [sysUpTime, sysName, sysDecr, ipAdEntAddr] zurück
+     * @return Die OIDs
+     */
+    public static List<String> getOIDs() {
+        return getOIDs(null);
     }
 }
