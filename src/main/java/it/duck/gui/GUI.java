@@ -1,13 +1,19 @@
 package it.duck.gui;
 
+import it.duck.gui.elements.CommunityTab;
 import it.duck.gui.elements.IPField;
 import it.duck.sanner.Scanner;
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
+import org.soulwing.snmp.VarbindCollection;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class GUI implements Initializable {
@@ -17,12 +23,16 @@ public class GUI implements Initializable {
     public ComboBox<String> combo_IP;
     public IPField startAddress;
     public IPField endAddress;
+    public TabPane resultsTabPane;
 
+    private Map<String, CommunityTab> communityTabs = new HashMap<>();
+    private static GUI INSTANCE;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         combo_IP.getItems().setAll("Host", "Network", "Custom-Range");
         combo_IP.getSelectionModel().select(0);
+        INSTANCE = this;
     }
 
 
@@ -50,5 +60,26 @@ public class GUI implements Initializable {
             System.out.println("Scanning Range " + firstIP + " - " + endIP);
             Scanner.scanNetwork(firstIP, endIP, null, null, null);
         }
+    }
+
+    public void addResult(String community, String ip, VarbindCollection collection) {
+        Platform.runLater(() -> {
+            if(communityTabs.size() != resultsTabPane.getTabs().size()) {
+                resultsTabPane.getTabs().clear();
+                communityTabs.clear();
+            }
+
+            CommunityTab tab = communityTabs.getOrDefault(community, new CommunityTab(community));
+            tab.addResult(ip, collection);
+
+            if(!communityTabs.containsKey(community)) {
+                communityTabs.put(community, tab);
+                resultsTabPane.getTabs().add(tab);
+            }
+        });
+    }
+
+    public static GUI getInstance() {
+        return INSTANCE;
     }
 }
