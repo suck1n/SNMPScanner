@@ -96,6 +96,7 @@ public class Scanner {
 
         SimpleSnmpTargetConfig config = new SimpleSnmpTargetConfig();
         config.setTimeout(2000);
+        config.setRetries(1);
 
         for(String community : communities) {
             target.setCommunity(community);

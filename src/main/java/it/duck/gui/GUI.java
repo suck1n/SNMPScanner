@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class GUI implements Initializable {
 
     public Button btn_Scan;
     public HBox endIPBox;

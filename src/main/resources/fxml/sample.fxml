@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
-<BorderPane prefHeight="700.0" prefWidth="1200.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.duck.gui.Controller">
+<BorderPane prefHeight="700.0" prefWidth="1200.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.duck.gui.GUI">
     <top>
         <HBox alignment="CENTER_LEFT" spacing="5.0">
             <ImageView fitHeight="40" fitWidth="40">
@@ -25,14 +25,12 @@
                 <VBox>
                     <HBox spacing="10.0" HBox.hgrow="ALWAYS">
                         <ComboBox fx:id="combo_IP" onAction="#on_ComboIP_Change" prefWidth="150.0" />
-                        <IPField fx:id="startAddress" maskEnabled="true">
-                            <promptTexts>
-                                <String fx:value="192" />
-                                <String fx:value="168" />
-                                <String fx:value="0" />
-                                <String fx:value="1" />
-                                <String fx:value="32" />
-                            </promptTexts>
+                        <IPField fx:id="startAddress">
+                            <String fx:value="192"/>
+                            <String fx:value="168"/>
+                            <String fx:value="0"/>
+                            <String fx:value="1"/>
+                            <String fx:value="32"/>
                         </IPField>
                         <Button fx:id="btn_Scan" onAction="#on_Scan_Click" prefWidth="90.0" text="Scan" />
                         <padding>
@@ -41,12 +39,10 @@
                     </HBox>
                     <HBox fx:id="endIPBox" spacing="10.0" HBox.hgrow="ALWAYS">
                         <IPField fx:id="endAddress" visible="false">
-                            <promptTexts>
-                                <String fx:value="192" />
-                                <String fx:value="168" />
-                                <String fx:value="0" />
-                                <String fx:value="1" />
-                            </promptTexts>
+                            <String fx:value="192"/>
+                            <String fx:value="168"/>
+                            <String fx:value="0"/>
+                            <String fx:value="1"/>
                         </IPField>
                         <padding>
                             <Insets bottom="10.0" left="170.0" right="10.0" top="10.0" />
@@ -59,7 +55,7 @@
                         </padding>
                     </Label>
                     <TabPane nodeOrientation="LEFT_TO_RIGHT" tabClosingPolicy="UNAVAILABLE">
-                        <Tab text="Public">
+                        <Tab text="No Results">
 
                         </Tab>
                     </TabPane>
@@ -87,7 +83,7 @@
                         </padding>
                     </Label>
                     <TabPane nodeOrientation="LEFT_TO_RIGHT" tabClosingPolicy="UNAVAILABLE">
-                        <Tab text="Public">
+                        <Tab text="No Results">
 
                         </Tab>
                     </TabPane>

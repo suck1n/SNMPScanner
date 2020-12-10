@@ -5,10 +5,9 @@ import org.soulwing.snmp.Mib;
 import org.soulwing.snmp.MibFactory;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +20,8 @@ public class StandardSettings {
         List<String> mibs = new ArrayList<>();
 
         try {
-            File f = new File(StandardSettings.class.getResource("/mibs.txt").toURI());
-            BufferedReader reader = new BufferedReader(new FileReader(f));
+            Reader r = new InputStreamReader(StandardSettings.class.getResourceAsStream("/mibs.txt"));
+            BufferedReader reader = new BufferedReader(r);
 
             String line;
             while((line = reader.readLine()) != null) {
@@ -30,7 +29,7 @@ public class StandardSettings {
                     mibs.add(line);
                 }
             }
-        } catch (URISyntaxException | IOException ignore) {}
+        } catch (IOException ignore) {}
 
         for(String m : mibs) {
             try {
@@ -51,7 +50,6 @@ public class StandardSettings {
             communities = new ArrayList<>();
         }
         communities.add("public");
-        communities.add("private");
         return communities;
     }
 
@@ -101,8 +99,10 @@ public class StandardSettings {
         }
 
         oids.add("sysName");
+        oids.add("sysContact");
         oids.add("sysUpTime");
         oids.add("sysDescr");
+        oids.add("sysLocation");
         oids.add("ipAdEntAddr");
 
         return oids;
