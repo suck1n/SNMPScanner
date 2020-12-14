@@ -6,7 +6,7 @@
 
     <groupId>it.duck</groupId>
     <artifactId>SNMPScanner</artifactId>
-    <version>0.3</version>
+    <version>0.5</version>
 
 
     <properties>

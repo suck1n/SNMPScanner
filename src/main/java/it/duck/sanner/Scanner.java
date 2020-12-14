@@ -15,15 +15,16 @@ public class Scanner {
      * <br><br>
      * Falls man das 192.168.1.0 Netzwerk mit den Standardeinstellungen scannen möchte, würde der Befehl
      * wie folgt aussehen: <br>
-     * <code>Scanner.scanNetwork("192.168.1.0", 24, null, null, null)</code>
+     * <code>Scanner.scanNetwork("192.168.1.0", 24, null, null, null, false)</code>
      *
      * @param ip Start IP, darf nicht null sein
      * @param mask Netmask, muss zwischen 0 und 32 liegen
      * @param mibs Custom MIBS, kann null sein
      * @param oids Custom OIDS, kann null sein
      * @param communities Custom Communities, kann null sein
+     * @param useGet Welche Methode genutzt werden soll
      */
-    public static void scanNetwork(String ip, int mask, List<String> mibs, List<String> oids, List<String> communities) {
+    public static void scanNetwork(String ip, int mask, List<String> mibs, List<String> oids, List<String> communities, boolean useGet) {
         if(ip == null || ip.trim().isEmpty()) {
             throw new IllegalArgumentException("IP cannot be empty!");
         }
@@ -34,7 +35,7 @@ public class Scanner {
 
 
         for(String address : IPHelper.calculateNetwork(ip, mask)) {
-            scanIP(address, mibs, oids, communities);
+            scanIP(address, mibs, oids, communities, useGet);
         }
     }
 
@@ -46,15 +47,16 @@ public class Scanner {
      * <br><br>
      * Falls man ein Netzwerk startend von 192.168.1.15 bis hin zu 192.168.1.30 mit den
      * Standardeinstellungen scannen möchte, würde der Befehl wie folgt aussehen: <br>
-     * <code>Scanner.scanNetwork("192.168.1.15", "192.168.1.30", null, null, null)</code>
+     * <code>Scanner.scanNetwork("192.168.1.15", "192.168.1.30", null, null, null, false)</code>
      *
      * @param startIP Start IP, darf nicht null sein
      * @param endIP End IP, darf nicht null sein
      * @param mibs Custom MIBS, kann null sein
      * @param oids Custom OIDS, kann null sein
      * @param communities Custom Communities, kann null sein
+     * @param useGet Welche Methode genutzt werden soll
      */
-    public static void scanNetwork(String startIP, String endIP, List<String> mibs, List<String> oids, List<String> communities) {
+    public static void scanNetwork(String startIP, String endIP, List<String> mibs, List<String> oids, List<String> communities, boolean useGet) {
         if(startIP == null || startIP.trim().isEmpty()) {
             throw new IllegalArgumentException("Start-IP cannot be empty!");
         }
@@ -65,7 +67,7 @@ public class Scanner {
 
 
         for(String address : IPHelper.calculateNetwork(startIP, endIP)) {
-            scanIP(address, mibs, oids, communities);
+            scanIP(address, mibs, oids, communities, useGet);
         }
     }
 
@@ -76,19 +78,20 @@ public class Scanner {
      * <br><br>
      * Falls man die IP 192.168.1.1 mit den Standardeinstellungen scannen möchte, würde der Befehl wie folgt aussehen:
      * <br>
-     * <code>Scanner.scanIP("192.168.1.1", null, null, null)</code>
+     * <code>Scanner.scanIP("192.168.1.1", null, null, null, false)</code>
      * @param ip IP-Adresse, darf nicht null sein
      * @param mibs Custom MIBS, kann null sein
      * @param oids Custom OIDS, kann null sein
      * @param communities Custom Communities, kann null sein
+     * @param useGet Welche Methode genutzt werden soll
      */
-    public static void scanIP(String ip, List<String> mibs, List<String> oids, List<String> communities) {
+    public static void scanIP(String ip, List<String> mibs, List<String> oids, List<String> communities, boolean useGet) {
         if(ip == null || ip.trim().isEmpty()) {
             throw new IllegalArgumentException("IP cannot be empty!");
         }
 
         communities = StandardSettings.getCommunities(communities);
-        oids = StandardSettings.getOIDs(oids);
+        oids = StandardSettings.getOIDs(oids, useGet);
         Mib mib = StandardSettings.getMIB(mibs);
 
         SimpleSnmpV2cTarget target = new SimpleSnmpV2cTarget();
@@ -102,7 +105,11 @@ public class Scanner {
             target.setCommunity(community);
 
             SnmpContext context = SnmpFactory.getInstance().newContext(target, mib, config, null);
-            context.asyncGetNext(new ResultCallback(community), oids);
+            if(useGet) {
+                context.asyncGet(new ResultCallback(community), oids);
+            } else {
+                context.asyncGetNext(new ResultCallback(community), oids);
+            }
         }
     }
 }

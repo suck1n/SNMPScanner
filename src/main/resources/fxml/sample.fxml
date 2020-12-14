@@ -11,7 +11,7 @@
     <top>
         <HBox alignment="CENTER_LEFT" spacing="5.0">
             <ImageView fitHeight="40" fitWidth="40">
-                <Image url="@../scanner.png" />
+                <Image url="@../images/scanner.png" />
             </ImageView>
             <Label>SNMP-Scanner</Label>
             <BorderPane.margin>
@@ -39,7 +39,7 @@
                         </padding>
                     </HBox>
                     <HBox spacing="10.0" HBox.hgrow="ALWAYS">
-                        <ComboBox fx:id="combo_Community" prefWidth="150" />
+                        <ComboBox fx:id="combo_Community" disable="true" prefWidth="150"/>
                         <IPField fx:id="endAddress" disable="true" maskVisible="false">
                             <String fx:value="192"/>
                             <String fx:value="168"/>
@@ -63,7 +63,7 @@
                     </TabPane>
                 </VBox>
             </Tab>
-            <Tab text="Trap Server">
+            <Tab text="Trap Server" disable="true">
                 <VBox>
                     <CheckBox>
                         Enable Listener
@@ -91,7 +91,7 @@
                     </TabPane>
                 </VBox>
             </Tab>
-            <Tab text="Settings">
+            <Tab text="Settings" disable="true">
                 <!-- ADD OIDS, MIBS, COMMUNITIES-->
             </Tab>
         </TabPane>

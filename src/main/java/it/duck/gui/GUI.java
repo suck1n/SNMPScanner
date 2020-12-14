@@ -6,6 +6,7 @@ import it.duck.sanner.Scanner;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TabPane;
 import org.soulwing.snmp.VarbindCollection;
@@ -22,7 +23,8 @@ public class GUI implements Initializable {
     public IPField startAddress;
     public IPField endAddress;
     public TabPane resultsTabPane;
-    public ComboBox<String> combo_Community;
+    // TODO Make Own ComboBox with CheckBoxes
+    public ComboBox<CheckBox> combo_Community;
     public ComboBox<String> combo_Method;
 
     private final Map<String, CommunityTab> communityTabs = new HashMap<>();
@@ -33,7 +35,9 @@ public class GUI implements Initializable {
         combo_IP.getItems().setAll("Host", "Network", "Custom-Range");
         combo_IP.getSelectionModel().select(0);
 
-        combo_Community.getItems().setAll("Public", "Private");
+        CheckBox cb = new CheckBox("Public");
+        cb.setSelected(true);
+        combo_Community.getItems().setAll(cb, new CheckBox("Private"));
         combo_Community.getSelectionModel().select(0);
 
         combo_Method.getItems().addAll( "GetNext", "Get");
@@ -56,16 +60,17 @@ public class GUI implements Initializable {
         String firstIP = startAddress.getIP();
         int mask = startAddress.getMask();
         String endIP = endAddress.getIP();
+        boolean useGet = combo_Method.getSelectionModel().getSelectedItem().equalsIgnoreCase("Get");
 
         if(endIP == null && mask == -1) {
             System.out.println("Scanning Host " + firstIP);
-            Scanner.scanIP(firstIP, null, null, null);
-        } else if(mask != -1) {
+            Scanner.scanIP(firstIP, null, null, null, useGet);
+        } else if(endIP == null) {
             System.out.println("Scanning Network " + firstIP + "/" + mask);
-            Scanner.scanNetwork(firstIP, mask, null, null, null);
+            Scanner.scanNetwork(firstIP, mask, null, null, null, useGet);
         } else {
             System.out.println("Scanning Range " + firstIP + " - " + endIP);
-            Scanner.scanNetwork(firstIP, endIP, null, null, null);
+            Scanner.scanNetwork(firstIP, endIP, null, null, null, useGet);
         }
     }
 

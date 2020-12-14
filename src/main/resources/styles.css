@@ -2,3 +2,7 @@
     -fx-font-family: Monospaced;
     -fx-font-size: 13px;
 }
+
+.check-box {
+    -fx-text-fill: black;
+}

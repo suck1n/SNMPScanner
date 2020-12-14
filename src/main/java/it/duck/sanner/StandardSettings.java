@@ -54,14 +54,6 @@ public class StandardSettings {
     }
 
     /**
-     * Gibt die Standard Communities [public, private] zurück
-     * @return Die Communities
-     */
-    public static List<String> getCommunities() {
-        return getCommunities(null);
-    }
-
-    /**
      * Gibt ein Standard MIB-Object zurück
      * @return Das MIB-Objekt
      */
@@ -89,30 +81,24 @@ public class StandardSettings {
     }
 
     /**
-     * Gibt die angegebene OIDs, sowie die standard OIDs zurück
+     * Gibt die angegebene OIDs, sowie die standard OIDs zurück. Mit dem Parameter {@code useGet}
+     * wird, falls {@code true}, ein Index hinzugefügt
      * @param oids Benutzerdefinierte OIDs
+     * @param useGet Welche Methode genutzt wird
      * @return Die OIDs
      */
-    public static List<String> getOIDs(List<String> oids) {
+    public static List<String> getOIDs(List<String> oids, boolean useGet) {
         if(oids == null) {
             oids = new ArrayList<>();
         }
 
-        oids.add("sysName");
-        oids.add("sysContact");
-        oids.add("sysUpTime");
-        oids.add("sysDescr");
-        oids.add("sysLocation");
-        oids.add("ipAdEntAddr");
+        oids.add("sysName" + (useGet ? ".0" : ""));
+        oids.add("sysContact" + (useGet ? ".0" : ""));
+        oids.add("sysUpTime" + (useGet ? ".0" : ""));
+        oids.add("sysDescr" + (useGet ? ".0" : ""));
+        oids.add("sysLocation" + (useGet ? ".0" : ""));
+        oids.add("sysServices" + (useGet ? ".0" : ""));
 
         return oids;
-    }
-
-    /**
-     * Gibt die Standard OIDs [sysUpTime, sysName, sysDecr, ipAdEntAddr] zurück
-     * @return Die OIDs
-     */
-    public static List<String> getOIDs() {
-        return getOIDs(null);
     }
 }
