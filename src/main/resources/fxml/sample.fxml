@@ -25,27 +25,29 @@
                 <VBox>
                     <HBox spacing="10.0" HBox.hgrow="ALWAYS">
                         <ComboBox fx:id="combo_IP" onAction="#on_ComboIP_Change" prefWidth="150.0" />
-                        <IPField fx:id="startAddress">
+                        <IPField fx:id="startAddress" maskDisabled="true">
                             <String fx:value="192"/>
                             <String fx:value="168"/>
                             <String fx:value="0"/>
                             <String fx:value="1"/>
                             <String fx:value="32"/>
                         </IPField>
+                        <ComboBox fx:id="combo_Method" prefWidth="110"/>
                         <Button fx:id="btn_Scan" onAction="#on_Scan_Click" prefWidth="90.0" text="Scan" />
                         <padding>
                             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                         </padding>
                     </HBox>
-                    <HBox fx:id="endIPBox" spacing="10.0" HBox.hgrow="ALWAYS">
-                        <IPField fx:id="endAddress" visible="false">
+                    <HBox spacing="10.0" HBox.hgrow="ALWAYS">
+                        <ComboBox fx:id="combo_Community" prefWidth="150" />
+                        <IPField fx:id="endAddress" disable="true" maskVisible="false">
                             <String fx:value="192"/>
                             <String fx:value="168"/>
                             <String fx:value="0"/>
                             <String fx:value="1"/>
                         </IPField>
                         <padding>
-                            <Insets bottom="10.0" left="170.0" right="10.0" top="10.0" />
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                         </padding>
                     </HBox>
                     <Label>

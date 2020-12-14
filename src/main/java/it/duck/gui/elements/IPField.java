@@ -1,5 +1,6 @@
 package it.duck.gui.elements;
 
+import javafx.application.Platform;
 import javafx.beans.DefaultProperty;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -19,7 +20,8 @@ public class IPField extends HBox {
     private NumberField maskField;
 
     private final ObservableList<String> promptTexts = FXCollections.observableArrayList();
-    private final BooleanProperty maskVisible = new SimpleBooleanProperty();
+    private final BooleanProperty maskVisible = new SimpleBooleanProperty(true);
+    private final BooleanProperty maskDisabled = new SimpleBooleanProperty(false);
 
     public IPField() {
         numberFields = new ArrayList<>();
@@ -35,6 +37,7 @@ public class IPField extends HBox {
 
         maskField = addElement(2, 32, 40,"/", lastElement);
         maskField.visibleProperty().bind(maskVisible);
+        maskField.disableProperty().bind(maskDisabled);
 
         promptTexts.addListener((ListChangeListener<String>) c -> {
             for(int i = 0; i < c.getList().size(); i++) {
@@ -59,6 +62,7 @@ public class IPField extends HBox {
             l.setStyle(delimiter.equals(".") ? "" : "-fx-font-size: 24px");
             if(delimiter.equals("/")) {
                 l.visibleProperty().bind(maskVisible);
+                l.disableProperty().bind(maskDisabled);
             }
 
             this.getChildren().add(l);
@@ -75,6 +79,7 @@ public class IPField extends HBox {
             previous.setOnKeyPressed((event) -> {
                 if(event.getCode() == KeyCode.PERIOD) {
                     n.requestFocus();
+                    Platform.runLater(n::selectAll);
                 }
             });
         }
@@ -115,12 +120,20 @@ public class IPField extends HBox {
 
 
 
-    public final boolean getMaskVisible() {
+    public final boolean isMaskVisible() {
         return maskVisible.get();
     }
 
     public final void setMaskVisible(boolean hasMask) {
         this.maskVisible.set(hasMask);
+    }
+
+    public boolean isMaskDisabled() {
+        return maskDisabled.get();
+    }
+
+    public void setMaskDisabled(boolean maskDisabled) {
+        this.maskDisabled.set(maskDisabled);
     }
 
     public ObservableList<String> getPromptTexts() {

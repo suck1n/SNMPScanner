@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.HBox;
 import org.soulwing.snmp.VarbindCollection;
 
 import java.net.URL;
@@ -19,27 +18,35 @@ import java.util.ResourceBundle;
 public class GUI implements Initializable {
 
     public Button btn_Scan;
-    public HBox endIPBox;
     public ComboBox<String> combo_IP;
     public IPField startAddress;
     public IPField endAddress;
     public TabPane resultsTabPane;
+    public ComboBox<String> combo_Community;
+    public ComboBox<String> combo_Method;
 
-    private Map<String, CommunityTab> communityTabs = new HashMap<>();
+    private final Map<String, CommunityTab> communityTabs = new HashMap<>();
     private static GUI INSTANCE;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         combo_IP.getItems().setAll("Host", "Network", "Custom-Range");
         combo_IP.getSelectionModel().select(0);
+
+        combo_Community.getItems().setAll("Public", "Private");
+        combo_Community.getSelectionModel().select(0);
+
+        combo_Method.getItems().addAll( "GetNext", "Get");
+        combo_Method.getSelectionModel().select(0);
+
         INSTANCE = this;
     }
 
 
     public void on_ComboIP_Change() {
         String selected = combo_IP.getSelectionModel().getSelectedItem();
-        startAddress.setMaskVisible(selected.equalsIgnoreCase("Network"));
-        endAddress.setVisible(selected.equalsIgnoreCase("Custom-Range"));
+        startAddress.setMaskDisabled(!selected.equalsIgnoreCase("Network"));
+        endAddress.setDisable(!selected.equalsIgnoreCase("Custom-Range"));
 
         endAddress.clear();
         startAddress.clear();
