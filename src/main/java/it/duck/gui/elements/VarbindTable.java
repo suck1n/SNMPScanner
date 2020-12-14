@@ -1,19 +1,42 @@
 package it.duck.gui.elements;
 
+import it.duck.gui.elements.VarbindTable.VarbindValue;
+import it.duck.gui.utility.TableUtility;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.soulwing.snmp.Varbind;
 import org.soulwing.snmp.VarbindCollection;
 
-public class VarbindTable extends TableView<VarbindTable.VarbindValue> {
+public class VarbindTable extends TableView<VarbindValue> {
 
+    private boolean isDefault = true;
 
     public VarbindTable() {
-        this(null);
+        TableColumn<VarbindValue, String> col = new TableColumn<>("Kein Client ausgewählt");
+
+        getColumns().add(col);
+
+        setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
     }
 
-    public VarbindTable(VarbindCollection collection) {
+
+    public void setVarbinds(VarbindCollection collection) {
+        if(isDefault) {
+            setColumnResizePolicy(UNCONSTRAINED_RESIZE_POLICY);
+            initializeTable();
+        }
+
+        if(collection != null) {
+            getItems().clear();
+            for(Varbind varbind : collection) {
+                getItems().add(new VarbindValue(varbind));
+            }
+            TableUtility.autoFitTable(this);
+        }
+    }
+
+    private void initializeTable() {
         TableColumn<VarbindValue, String> nameCol = new TableColumn<>("Name");
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
@@ -23,21 +46,12 @@ public class VarbindTable extends TableView<VarbindTable.VarbindValue> {
         TableColumn<VarbindValue, String> valueCol = new TableColumn<>("Response");
         valueCol.setCellValueFactory(new PropertyValueFactory<>("value"));
 
+        getColumns().clear();
         getColumns().add(nameCol);
         getColumns().add(oidCol);
         getColumns().add(valueCol);
 
-        setVarbinds(collection);
-    }
-
-
-    public void setVarbinds(VarbindCollection collection) {
-        if(collection != null) {
-            getItems().clear();
-            for(Varbind varbind : collection) {
-                getItems().add(new VarbindValue(varbind));
-            }
-        }
+        isDefault = false;
     }
 
     protected static class VarbindValue {
