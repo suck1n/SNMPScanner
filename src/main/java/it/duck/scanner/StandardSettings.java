@@ -1,4 +1,4 @@
-package it.duck.sanner;
+package it.duck.scanner;
 
 
 import org.soulwing.snmp.Mib;

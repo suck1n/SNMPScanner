@@ -2,7 +2,7 @@ package it.duck.gui;
 
 import it.duck.gui.elements.CommunityTab;
 import it.duck.gui.elements.IPField;
-import it.duck.sanner.Scanner;
+import it.duck.scanner.Scanner;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

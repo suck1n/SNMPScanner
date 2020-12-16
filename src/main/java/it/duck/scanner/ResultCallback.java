@@ -1,4 +1,4 @@
-package it.duck.sanner;
+package it.duck.scanner;
 
 import it.duck.gui.GUI;
 import org.soulwing.snmp.SnmpCallback;

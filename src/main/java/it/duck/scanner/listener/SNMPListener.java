@@ -1,6 +1,6 @@
-package it.duck.sanner.listener;
+package it.duck.scanner.listener;
 
-import it.duck.sanner.StandardSettings;
+import it.duck.scanner.StandardSettings;
 import org.soulwing.snmp.SnmpFactory;
 import org.soulwing.snmp.SnmpListener;
 import org.soulwing.snmp.SnmpNotificationEvent;
