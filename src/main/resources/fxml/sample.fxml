@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import it.duck.gui.elements.CommunityBox?>
 <?import it.duck.gui.elements.IPField?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -39,7 +40,10 @@
                         </padding>
                     </HBox>
                     <HBox spacing="10.0" HBox.hgrow="ALWAYS">
-                        <ComboBox fx:id="combo_Community" disable="true" prefWidth="150"/>
+                        <CommunityBox fx:id="combo_Community" prefWidth="150" defaultSelectedIndex="0">
+                            <String fx:value="public"/>
+                            <String fx:value="private"/>
+                        </CommunityBox>
                         <IPField fx:id="endAddress" disable="true" maskVisible="false">
                             <String fx:value="192"/>
                             <String fx:value="168"/>

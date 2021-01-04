@@ -34,7 +34,9 @@ public class CommunityTab extends Tab {
     }
 
     public void addResult(String ip, VarbindCollection collection) {
-        list.addIP(ip);
+        if(!list.containsIP(ip)) {
+            list.addIP(ip);
+        }
         collections.put(ip, collection);
     }
 }

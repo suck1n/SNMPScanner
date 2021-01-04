@@ -48,8 +48,8 @@ public class StandardSettings {
     public static List<String> getCommunities(List<String> communities) {
         if(communities == null) {
             communities = new ArrayList<>();
+            communities.add("public");
         }
-        communities.add("public");
         return communities;
     }
 

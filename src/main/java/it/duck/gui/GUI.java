@@ -1,18 +1,19 @@
 package it.duck.gui;
 
+import it.duck.gui.elements.CommunityBox;
 import it.duck.gui.elements.CommunityTab;
 import it.duck.gui.elements.IPField;
 import it.duck.scanner.Scanner;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TabPane;
 import org.soulwing.snmp.VarbindCollection;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -23,8 +24,7 @@ public class GUI implements Initializable {
     public IPField startAddress;
     public IPField endAddress;
     public TabPane resultsTabPane;
-    // TODO Make Own ComboBox with CheckBoxes
-    public ComboBox<CheckBox> combo_Community;
+    public CommunityBox combo_Community;
     public ComboBox<String> combo_Method;
 
     private final Map<String, CommunityTab> communityTabs = new HashMap<>();
@@ -34,11 +34,6 @@ public class GUI implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         combo_IP.getItems().setAll("Host", "Network", "Custom-Range");
         combo_IP.getSelectionModel().select(0);
-
-        CheckBox cb = new CheckBox("Public");
-        cb.setSelected(true);
-        combo_Community.getItems().setAll(cb, new CheckBox("Private"));
-        combo_Community.getSelectionModel().select(0);
 
         combo_Method.getItems().addAll( "GetNext", "Get");
         combo_Method.getSelectionModel().select(0);
@@ -58,21 +53,26 @@ public class GUI implements Initializable {
 
     public void on_Scan_Click() {
         String firstIP = startAddress.getIP();
-        int mask = startAddress.getMask();
         String endIP = endAddress.getIP();
+        int mask = startAddress.getMask();
+
         boolean useGet = combo_Method.getSelectionModel().getSelectedItem().equalsIgnoreCase("Get");
+
+        List<String> communities = combo_Community.getSelectedCommunities();
 
         if(endIP == null && mask == -1) {
             System.out.println("Scanning Host " + firstIP);
-            Scanner.scanIP(firstIP, null, null, null, useGet);
+            Scanner.scanIP(firstIP, null, null, communities, useGet);
         } else if(endIP == null) {
             System.out.println("Scanning Network " + firstIP + "/" + mask);
-            Scanner.scanNetwork(firstIP, mask, null, null, null, useGet);
+            Scanner.scanNetwork(firstIP, mask, null, null, communities, useGet);
         } else {
             System.out.println("Scanning Range " + firstIP + " - " + endIP);
-            Scanner.scanNetwork(firstIP, endIP, null, null, null, useGet);
+            Scanner.scanNetwork(firstIP, endIP, null, null, communities, useGet);
         }
     }
+
+
 
     public void addResult(String community, String ip, VarbindCollection collection) {
         Platform.runLater(() -> {
@@ -90,6 +90,7 @@ public class GUI implements Initializable {
             }
         });
     }
+
 
     public static GUI getInstance() {
         return INSTANCE;
