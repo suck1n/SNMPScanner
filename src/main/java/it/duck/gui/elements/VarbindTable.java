@@ -22,18 +22,20 @@ public class VarbindTable extends TableView<VarbindValue> {
 
 
     public void setVarbinds(VarbindCollection collection) {
+        if(collection == null) {
+            return;
+        }
+
         if(isDefault) {
             setColumnResizePolicy(UNCONSTRAINED_RESIZE_POLICY);
             initializeTable();
         }
 
-        if(collection != null) {
-            getItems().clear();
-            for(Varbind varbind : collection) {
-                getItems().add(new VarbindValue(varbind));
-            }
-            TableUtility.autoFitTable(this);
+        getItems().clear();
+        for(Varbind varbind : collection) {
+            getItems().add(new VarbindValue(varbind));
         }
+        TableUtility.autoFitTable(this);
     }
 
     private void initializeTable() {

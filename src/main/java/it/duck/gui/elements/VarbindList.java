@@ -17,4 +17,11 @@ public class VarbindList extends ListView<String> {
     public boolean containsIP(String ip) {
         return getItems().contains(ip);
     }
+
+    public void updateIP(String ip) {
+        if(getSelectionModel().getSelectedItem().equals(ip)) {
+            getSelectionModel().clearSelection();
+            getSelectionModel().select(ip);
+        }
+    }
 }
