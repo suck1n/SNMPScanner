@@ -6,3 +6,7 @@
 .check-box {
     -fx-text-fill: black;
 }
+
+.settings-button {
+    -fx-pref-width: 120px;
+}

@@ -16,11 +16,11 @@ public class SNMPListener {
      *
      */
     public SNMPListener() {
-        listener = SnmpFactory.getInstance().newListener(StandardSettings.getMIB());
+        this(162);
     }
 
     /**
-     * Eirstellt einen Listener der auf den definierten <code>port</code> hört.
+     * Erstellt einen Listener der auf den definierten <code>port</code> hört.
      * @param port Der Port
      */
     public SNMPListener(int port) {
@@ -36,7 +36,8 @@ public class SNMPListener {
             throw new IllegalArgumentException("Port has to be greater than 1024 and less than 65536");
         }
 
-        listener = SnmpFactory.getInstance().newListener(port, StandardSettings.getMIB());
+        // TODO Get Settings Mibs
+        listener = SnmpFactory.getInstance().newListener(port, StandardSettings.getMIB(null));
     }
 
     /**
@@ -59,7 +60,7 @@ public class SNMPListener {
         }
     }
 
-
+    // TODO Add to Table
     private Boolean handleNotification(SnmpNotificationEvent e) {
         System.out.println("New Trap/Inform: " + e);
         return true;
