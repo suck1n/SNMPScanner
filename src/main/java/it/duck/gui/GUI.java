@@ -51,6 +51,20 @@ public class GUI implements Initializable {
 
         combo_Method.getItems().addAll( "GetNext", "Get");
         combo_Method.getSelectionModel().select(0);
+        combo_Method.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            List<String> oldOids = StandardSettings.getOIDs(null, oldValue.equalsIgnoreCase("Get"));
+            List<String> newOids = StandardSettings.getOIDs(null, newValue.equalsIgnoreCase("Get"));
+
+            for(int i = 0; i < oldOids.size(); i++) {
+                String oldOid = oldOids.get(i);
+                String newOid = newOids.get(i);
+
+                if(settingOIDs.getItems().contains(oldOid)) {
+                    settingOIDs.getItems().remove(oldOid);
+                    settingOIDs.getItems().add(newOid);
+                }
+            }
+        });
 
         combo_Community.setItems(settingCommunities.getItems());
 
