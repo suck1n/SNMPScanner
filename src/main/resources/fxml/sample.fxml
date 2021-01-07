@@ -35,7 +35,6 @@
                                     <String fx:value="32"/>
                                 </IPField>
                                 <ComboBox fx:id="combo_Method" prefWidth="110"/>
-                                <Button fx:id="btn_Scan" onAction="#on_Scan_Click" prefWidth="90.0" text="Scan" />
                             </HBox>
                             <HBox spacing="10.0" HBox.hgrow="ALWAYS">
                                 <CommunityBox fx:id="combo_Community" prefWidth="150" defaultSelectedIndex="0" />
@@ -45,6 +44,7 @@
                                     <String fx:value="0"/>
                                     <String fx:value="1"/>
                                 </IPField>
+                                <Button fx:id="btn_Scan" onAction="#on_Scan_Click" prefWidth="110.0" text="Scan" />
                             </HBox>
                         </VBox>
                         <TextArea fx:id="txt_Console" editable="false" HBox.hgrow="ALWAYS" />
@@ -69,11 +69,12 @@
                 <VBox>
                     <HBox spacing="10">
                         <VBox spacing="20">
-                            <CheckBox fx:id="cb_Listener" onAction="#on_Listener_Change">
-                                Enable Listener
-                            </CheckBox>
                             <HBox spacing="10" HBox.hgrow="ALWAYS">
-                                <Label>Port Number: </Label>
+                                <Label>Enable Listener: </Label>
+                                <CheckBox fx:id="cb_Listener" onAction="#on_Listener_Change" />
+                            </HBox>
+                            <HBox spacing="10" HBox.hgrow="ALWAYS">
+                                <Label style="-fx-translate-y: 4px">Port Number: </Label>
                                 <NumberField promptText="162" maxDigits="5" maxValue="65536" fx:id="txt_Port"/>
                             </HBox>
                         </VBox>
