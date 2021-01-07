@@ -19,7 +19,7 @@ public class VarbindList extends ListView<String> {
     }
 
     public void updateIP(String ip) {
-        if(getSelectionModel().getSelectedItem().equals(ip)) {
+        if(getSelectionModel().getSelectedItem() != null && getSelectionModel().getSelectedItem().equals(ip)) {
             getSelectionModel().clearSelection();
             getSelectionModel().select(ip);
         }

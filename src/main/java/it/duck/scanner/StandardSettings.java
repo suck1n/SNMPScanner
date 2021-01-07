@@ -38,7 +38,7 @@ public class StandardSettings {
      * @return Liste aus Strings mit den Communities
      */
     public static List<String> getCommunities(List<String> communities) {
-        if(communities == null) {
+        if(communities == null || communities.isEmpty()) {
             communities = new ArrayList<>();
             communities.add("public");
             communities.add("private");
@@ -87,7 +87,7 @@ public class StandardSettings {
      * @return Liste aus Strings mit den OIDs
      */
     public static List<String> getOIDs(List<String> oids, boolean useGet) {
-        if(oids == null) {
+        if(oids == null || oids.isEmpty()) {
             oids = new ArrayList<>();
 
             oids.add("sysName" + (useGet ? ".0" : ""));

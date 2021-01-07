@@ -6,7 +6,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.soulwing.snmp.Varbind;
-import org.soulwing.snmp.VarbindCollection;
+
+import java.util.Collection;
 
 public class VarbindTable extends TableView<VarbindValue> {
 
@@ -21,7 +22,7 @@ public class VarbindTable extends TableView<VarbindValue> {
     }
 
 
-    public void setVarbinds(VarbindCollection collection) {
+    public void setVarbinds(Collection<Varbind> collection) {
         if(collection == null) {
             return;
         }

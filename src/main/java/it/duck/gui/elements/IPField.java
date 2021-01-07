@@ -68,7 +68,7 @@ public class IPField extends HBox {
             this.getChildren().add(l);
         }
 
-        NumberField n = new NumberField(maxDigits, maxValue, width);
+        NumberField n = new NumberField(maxDigits, maxValue, 0, width);
 
         if(delimiter == null || delimiter.equals(".")) {
             numberFields.add(n);

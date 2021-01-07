@@ -23,7 +23,7 @@ public class ResultCallback implements SnmpCallback<VarbindCollection> {
         String ip = e.getContext().getTarget().getAddress();
         try {
             VarbindCollection result = e.getResponse().get();
-            GUI.getInstance().addResult(community, ip, result);
+            GUI.getInstance().addScannerResult(community, ip, result);
         } catch (TimeoutException ignore) {
             GUI.getInstance().warning("Keine Antwort von \"" + ip + "\" auf der Community \"" + this.community + "\"");
         } finally {

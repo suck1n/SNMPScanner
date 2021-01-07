@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class IPHelper {
 
-
     /**
      * Berechnet alle IPs des Netzwerkes <code>ip</code> mithilfe der Maske
      *
@@ -13,9 +12,12 @@ public class IPHelper {
      * @return Alle IPs des Netzwerkes
      */
     public static ArrayList<String> calculateNetwork(String ip, int mask) {
-        String lastIP = getLastIP(ip, mask);
+        int wildcard = 32 - mask;
+        long binaryWildcard = (long) (Math.pow(2, wildcard) - 1);
+        long netId = (getAsBinary(ip) >> wildcard) << wildcard;
+        long broadcast = netId | binaryWildcard;
 
-        return calculateNetwork(ip, lastIP);
+        return calculateNetwork(ip, getAsString(broadcast));
     }
 
     /**
@@ -26,84 +28,40 @@ public class IPHelper {
      * @return Alle IPs zwischen den IPs
      */
     public static ArrayList<String> calculateNetwork(String startIP, String lastIP) {
+        ArrayList<String> list = new ArrayList<>();
 
-        int[] ipParts = getIPParts(startIP);
-        int[] lastIPParts = getIPParts(lastIP);
-
-        ArrayList<String> ips = new ArrayList<>();
-        for(int first = ipParts[0]; first <= lastIPParts[0]; first++) {
-            for(int second = ipParts[1]; second <= lastIPParts[1]; second++) {
-                for(int third = ipParts[2]; third <= lastIPParts[2]; third++) {
-                    for(int fourth = ipParts[3]; fourth <= lastIPParts[3]; fourth++) {
-                        ips.add(first + "." + second + "." + third + "." + fourth);
-                    }
-                }
-            }
+        for(int i = 0; i <= getAsBinary(lastIP) - getAsBinary(startIP); i++) {
+            list.add(getAsString(getAsBinary(startIP) + i));
         }
-        return ips;
+
+        return list;
     }
 
+    private static long getAsBinary(String address) {
+        long binary = 0;
 
-    private static String getLastIP(String ip, int mask) {
-        String maskBinary = getBinaryMask(mask);
-        String ipBinary = getBinaryIP(ip);
+        String[] parts = address.split("\\.");
+        for(int i = 0; i < 4; i++) {
+            binary |= Long.parseLong(parts[i]) << (8 * (parts.length - i - 1));
+        }
 
-        StringBuilder lastIPBuilder= new StringBuilder();
+        return binary;
+    }
+
+    private static String getAsString(long binary) {
+        StringBuilder builder = new StringBuilder();
 
         for(int i = 0; i < 4; i++) {
-            StringBuilder binary = new StringBuilder();
-            for(int j = 0; j < ipBinary.length() / 4; j++) {
-                char maskChar = maskBinary.charAt(i * 8 + j);
-                char ipChar = ipBinary.charAt(i * 8 +j);
+            long block;
 
-                if(maskChar == '1' || ipChar == '1') {
-                    binary.append(1);
-                } else {
-                    binary.append(0);
-                }
-            }
+            block = binary & 255;
+            binary >>= 8;
 
-            lastIPBuilder.append(Integer.parseInt(binary.toString(), 2)).append(".");
+            builder.insert(0, block);
+            builder.insert(0, '.');
         }
 
-        lastIPBuilder.deleteCharAt(lastIPBuilder.length() - 1);
-
-        return lastIPBuilder.toString();
-    }
-
-    private static String getBinaryIP(String ip) {
-        int[] parts = getIPParts(ip);
-
-        StringBuilder ipBuilder = new StringBuilder();
-        for(int i = 0; i < 4; i++) {
-            String binary = String.format("%8s", Integer.toBinaryString(parts[i])).replace(" ", "0");
-            ipBuilder.append(binary);
-        }
-
-        return ipBuilder.toString();
-    }
-
-    private static String getBinaryMask(int mask) {
-        StringBuilder maskBuilder = new StringBuilder();
-        for(int i = 0; i < 32; i++) {
-            if(i < mask) {
-                maskBuilder.append(0);
-            } else {
-                maskBuilder.append(1);
-            }
-        }
-
-        return maskBuilder.toString();
-    }
-
-    private static int[] getIPParts(String ip) {
-        String[] stringParts = ip.split("\\.");
-        int[] parts = new int[4];
-
-        for(int i = 0; i < stringParts.length; i++) {
-            parts[i] = Integer.parseInt(stringParts[i]);
-        }
-
-        return parts;
+        builder.deleteCharAt(0);
+        return builder.toString();
     }
 }

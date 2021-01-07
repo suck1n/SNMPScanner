@@ -6,18 +6,20 @@ import javafx.scene.control.TextField;
 
 public class NumberField extends TextField {
 
-    private final IntegerProperty maxDigits = new SimpleIntegerProperty();
-    private final IntegerProperty maxValue = new SimpleIntegerProperty();
+    private final IntegerProperty maxDigits = new SimpleIntegerProperty(Integer.MAX_VALUE);
+    private final IntegerProperty minValue = new SimpleIntegerProperty(0);
+    private final IntegerProperty maxValue = new SimpleIntegerProperty(Integer.MAX_VALUE);
 
-    public NumberField(int maxDigits, int maxValue, double prefWidth) {
+    public NumberField(int maxDigits, int maxValue, int minValue, double prefWidth) {
         setMaxValue(maxValue);
         setMaxDigits(maxDigits);
+        setMinValue(minValue);
         setPrefWidth(prefWidth);
         registerListener();
     }
 
     public NumberField() {
-        this(0, 0, -1);
+        this(Integer.MAX_VALUE, Integer.MAX_VALUE, 0, -1);
     }
 
     private void registerListener() {
@@ -28,7 +30,7 @@ public class NumberField extends TextField {
                 try {
                     if (!newValue.equals("")) {
                         int val = Integer.parseInt(newValue);
-                        if(val > maxValue.get()) {
+                        if(val > maxValue.get() || val < minValue.get()) {
                             throw new NumberFormatException();
                         }
                     }
@@ -38,6 +40,10 @@ public class NumberField extends TextField {
                 }
             }
         });
+    }
+
+    public void setMinValue(int minValue) {
+        this.minValue.set(minValue);
     }
 
     public final void setMaxDigits(int maxDigits) {
@@ -56,8 +62,12 @@ public class NumberField extends TextField {
         return this.maxValue.get();
     }
 
+    public int getMinValue() {
+        return minValue.get();
+    }
+
     public int getValue() {
-        String text = getText();
+        String text = getText().trim().isEmpty() ? getPromptText() : getText();
         try {
             return Integer.parseInt(text);
         } catch(NumberFormatException e) {
