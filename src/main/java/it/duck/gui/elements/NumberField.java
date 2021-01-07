@@ -67,9 +67,8 @@ public class NumberField extends TextField {
     }
 
     public int getValue() {
-        String text = getText().trim().isEmpty() ? getPromptText() : getText();
         try {
-            return Integer.parseInt(text);
+            return Integer.parseInt(getText());
         } catch(NumberFormatException e) {
             return -1;
         }

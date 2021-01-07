@@ -110,7 +110,7 @@ public class GUI implements Initializable {
 
     public void on_Listener_Change() {
         if(cb_Listener.isSelected()) {
-            listener.changePort(txt_Port.getValue());
+            listener.changePort(txt_Port.getValue() == -1 ? 162 : txt_Port.getValue());
             listener.start();
         } else {
             listener.stop();
@@ -151,7 +151,7 @@ public class GUI implements Initializable {
                 String text = tabPane.getSelectionModel().getSelectedItem().getText();
                 if(text.equalsIgnoreCase("Scan")) {
                     txt_Console.appendText(message + "\n");
-                } else if(text.equalsIgnoreCase("Listener")) {
+                } else if(text.equalsIgnoreCase("Trap Server")) {
                     txt_ListenerConsole.appendText(message + "\n");
                 }
             }
