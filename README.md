@@ -17,9 +17,14 @@
 SNMP Scanner Tool welches in Java geschrieben wurde.
 
 ## Dependencies
-Das Programm braucht lediglich nur die Bibliothek
-[tnm4j](https://github.com/soulwing/tnm4j). \
-Es wurde die Java Version 8 genutzt und die tnm4j Version 11.
+Das Programm braucht lediglich die Bibliothek
+[tnm4j](https://github.com/soulwing/tnm4j) und [controlsfx](https://github.com/controlsfx/controlsfx).
+
+### Versions
+ - Java: 1.8.0_172
+ - tnm4j: 1.0.11
+ - controlsfx: 8.40.18
+
 
 ## Installation/Start
 Zum Installieren muss die `SNMPScanner.jar` Datei im Release Commit
@@ -29,67 +34,65 @@ Doppelklick zu starten oder den Befehl `java -jar SNMPScanner.jar` in der Konsol
 auszuführen. Falls man die Source Files selbst kompilieren möchte, kann man das
 über Maven machen, und zwar mit dem Befehl `mvn package`. Falls alles funktioniert
 hat sollte man im Ordner `target` zwei Jar-Dateien finden mit den Namen
-`SNMPScanner-0.5.jar` und `SNMPScanner-0.5-jar-with-dependencies.jar`.
-Die Jar-Datei mit den Dependencies, heißt `SNMPScanner-0.5-jar-with-dependencies.jar`,
-kann dann über den Befehl `java -jar SNMPScanner-0.5-jar-with-dependencies.jar` ausgeführt werden.
+`SNMPScanner-1.0.jar` und `SNMPScanner-1.0-jar-with-dependencies.jar`.
+Die Jar-Datei mit den Dependencies `SNMPScanner-1.0-jar-with-dependencies.jar`,
+kann dann über den Befehl `java -jar SNMPScanner-1.0-jar-with-dependencies.jar` ausgeführt werden.
 
 # SNMP Scanner
 ## Status
-Derzeit muss der Großteil des Programms noch über den Code geändert werden.
-Die GUI kann jedoch schon einen Host, ein Netzwerk oder eine Range scannen.
-Die Ergebnisse werden dann in der GUI dargestellt, bei keinem Ergebnis oder
-Misserfolg bekommt man einen Output in der Konsole.
+Das Programm ist komplett. Das heißt, dass alles nötige über die GUI geändert und
+genutzt werden kann. 
+
 
 ## Planned
-Es ist geplant die Trap Listener mit der UI zu verbinden, sowie dem User noch
-mehr Einstellungsmöglichkeiten zu bieten. Das heißt benutzerdefinierte MIBs, OIDs
-und Communities. Auch geplant ist es die GUI zu verbessern.
+Alle nötigen Ziele wurden erreicht. Jedoch wird noch an kleinen Extrafeatures gearbeitet, wie zum Beispiel
+die Community aus einer Trap zu lesen.
 
 ## Start Scanning
 Um einen Scan, für eine IP auszuführen muss man im Feld die IP des
 Hosts eintragen und dann die Methode auswählen, also `Get` oder `GetNext`.
 Per Klick auf Scan wird schon eine Anfrage geschickt. Falls eine Request an
 ein ganzes Netzwerk oder nur an eine Range geschickt werden sollte, kann
-das in der ComboBox geändert werden.
+das in der ComboBox links geändert werden. In der ComboBox `Communities` können
+jeweils Communities aktiviert bzw. deaktiviert werden.
 
-### Example
+### Examples
 
-![Scanning for Network](src/main/resources/images/snmp_scanner_gui.png)
+#### GUI
+
+![GUI of the Scanner](src/main/resources/images/snmp_scanner_results.png)
+
+#### Host, Network or Range
+
+![Scan Type](src/main/resources/images/snmp_scanner_host.png)
+
+#### Method
+
+![Scan Method](src/main/resources/images/snmp_scanner_method.png)
+
+#### Communities
+
+![Communities](src/main/resources/images/snmp_scanner_communities.png)
 
 ## Trap Listener
-Für einen Listener wird eine neue Instanz der Klasse ```SNMPListener```
-erstellt. Um den Listener dann noch zu starten wird die ``start`` Methode
-des Objekts aufgerufen. Der Listener kann dann wieder über die Methode
-``stop`` gestoppt werden. Damit Traps nicht nur vom eigenem Computer
+Um den Listener zu starten, muss die CheckBox aktiviert werden. Vorher kann man
+noch darunter den zu nutzenden Port deklarieren, falls das Textfield leer bleibt
+wird der Standardport 162 benutzt. Damit Traps nicht nur vom eigenem Computer
 gesendet werden können, muss noch eine Firewall Regel erstellt
 werden. Und zwar eine eingehende Regel für UDP Protokolle, welche den
 Port für alle Netzwerke (Private, Öffentlich und Domäne) zulässt.
 
+### Testing
+
+Um selbst eine Trap zu senden, kann man das über einen Befehl auf einem Linuxsystem
+erreichen. Ein Beispiel dafür wäre:
+
+![SNMP Trap Command](src/main/resources/images/console_trap.png)
+
 ### Example
 
-```java
+![SNMP Trap Result](src/main/resources/images/snmp_scanner_trap_listener.png)
 
-import it.duck.scanner.listener.SNMPListener;
+## Settings
 
-class TrapListenerExample {
-
-   private static int PORT = 10124;
-
-   // Die Ergebnisse werden in der Konsole ausgegeben
-   public static void main(String[] args) {
-      // Der Listener wird auf den Port 10124 hören
-      SNMPListener listener = new SNMPListener(PORT);
-      // Der Handler wird registriert und somit startet der Listener
-      listener.start();
-      // Für das Beispiel wird 6 Sekunden lang gewartet
-      try {
-         Thread.sleep(6000);
-      } catch (InterruptedException e) {
-         System.out.println("Sleep wurde unterbrochen!");
-      } finally {
-         // Zum Schluss muss der Listener noch gestoppt werden
-         listener.stop();
-      }
-   }
-}
-```
+![SNMP Settings](src/main/resources/images/snmp_scanner_settings.png)
