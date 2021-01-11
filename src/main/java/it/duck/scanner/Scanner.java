@@ -1,6 +1,7 @@
 package it.duck.scanner;
 
 import it.duck.utility.IPHelper;
+import it.duck.utility.ThreadHandler;
 import org.soulwing.snmp.*;
 
 import java.util.List;
@@ -33,9 +34,12 @@ public class Scanner {
             throw new IllegalArgumentException("Mask has to be smaller than 32 and greater than 0");
         }
 
+        communities = StandardSettings.getCommunities(communities);
+        oids = StandardSettings.getOIDs(oids, useGet);
+        Mib mib = StandardSettings.getMIB(mibs);
 
         for(String address : IPHelper.calculateNetwork(ip, mask)) {
-            scanIP(address, mibs, oids, communities, useGet);
+            scan(address, mib, oids, communities, useGet);
         }
     }
 
@@ -65,9 +69,12 @@ public class Scanner {
             throw new IllegalArgumentException("End-IP cannot be empty!");
         }
 
+        communities = StandardSettings.getCommunities(communities);
+        oids = StandardSettings.getOIDs(oids, useGet);
+        Mib mib = StandardSettings.getMIB(mibs);
 
         for(String address : IPHelper.calculateNetwork(startIP, endIP)) {
-            scanIP(address, mibs, oids, communities, useGet);
+            scan(address, mib, oids, communities, useGet);
         }
     }
 
@@ -94,22 +101,28 @@ public class Scanner {
         oids = StandardSettings.getOIDs(oids, useGet);
         Mib mib = StandardSettings.getMIB(mibs);
 
-        SimpleSnmpV2cTarget target = new SimpleSnmpV2cTarget();
-        target.setAddress(ip);
+        scan(ip, mib, oids, communities, useGet);
+    }
 
-        SimpleSnmpTargetConfig config = new SimpleSnmpTargetConfig();
-        config.setTimeout(2000);
-        config.setRetries(1);
+    private static void scan(String ip, Mib mib, List<String> oids, List<String> communities, boolean useGet) {
+        ThreadHandler.startNewThread(() -> {
+            SimpleSnmpV2cTarget target = new SimpleSnmpV2cTarget();
+            target.setAddress(ip);
 
-        for(String community : communities) {
-            target.setCommunity(community);
+            SimpleSnmpTargetConfig config = new SimpleSnmpTargetConfig();
+            config.setTimeout(2000);
+            config.setRetries(1);
 
-            SnmpContext context = SnmpFactory.getInstance().newContext(target, mib, config, null);
-            if(useGet) {
-                context.asyncGet(new ResultCallback(community), oids);
-            } else {
-                context.asyncGetNext(new ResultCallback(community), oids);
+            for(String community : communities) {
+                target.setCommunity(community);
+
+                SnmpContext context = SnmpFactory.getInstance().newContext(target, mib, config, null);
+                if(useGet) {
+                    context.asyncGet(new ResultCallback(community), oids);
+                } else {
+                    context.asyncGetNext(new ResultCallback(community), oids);
+                }
             }
-        }
+        });
     }
 }
