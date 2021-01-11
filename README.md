@@ -7,7 +7,6 @@
     * [Installation/Start](#installationstart)
 2. [SNMP Scanner](#snmp-scanner)
     * [Status](#status)
-    * [Planned](#planned) 
     * [Start Scanning](#start-scanning)
     * [Trap Listener](#trap-listener)
 
@@ -34,9 +33,9 @@ Doppelklick ausgeführt werden. Ansonsten kann man auch den Befehl `java -jar SN
 ausführen. Falls man die Source Files selbst kompilieren möchte, kann man das
 über Maven machen. Der Befehl dafür lautet `mvn package`. Falls das Kompilieren
 ohne Probleme funktioniert hat, sollte man im Ordner `target` zwei Jar-Dateien finden mit den Namen
-`SNMPScanner-1.0.jar` und `SNMPScanner-1.0-jar-with-dependencies.jar`.
-Die Jar-Datei mit den Dependencies `SNMPScanner-1.0-jar-with-dependencies.jar`,
-kann dann über den Befehl `java -jar SNMPScanner-1.0-jar-with-dependencies.jar` ausgeführt werden.
+`SNMPScanner-1.2.jar` und `SNMPScanner-1.2-jar-with-dependencies.jar`.
+Die Jar-Datei mit den Dependencies `SNMPScanner-1.2-jar-with-dependencies.jar`,
+kann dann über den Befehl `java -jar SNMPScanner-1.2-jar-with-dependencies.jar` ausgeführt werden.
 
 # SNMP Scanner
 ## Status
