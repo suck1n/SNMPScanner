@@ -64,7 +64,7 @@ public class StandardSettings {
             try {
                 mib.load(m);
             } catch (IOException e) {
-                GUI.getInstance().error("Die MIB " + m + " konnte nicht geladen werden!");
+                GUI.getLogger().error("Die MIB " + m + " konnte nicht geladen werden!");
             }
         }
 

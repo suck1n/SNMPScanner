@@ -49,7 +49,7 @@ public class SNMPListener {
         if(listener == null) {
             listener = SnmpFactory.getInstance().newListener(port, StandardSettings.getMIB(GUI.getInstance().getSettingMIBs()));
             listener.addHandler(this::handleNotification);
-            GUI.getInstance().info("Listener hört jetzt auf dem Port " + port + "!");
+            GUI.getLogger().info("Listener hört jetzt auf dem Port " + port + "!");
         }
     }
 
@@ -60,7 +60,7 @@ public class SNMPListener {
         if(listener != null) {
             listener.removeHandler(this::handleNotification);
             listener.close();
-            GUI.getInstance().info("Listener wurde gestoppt!");
+            GUI.getLogger().info("Listener wurde gestoppt!");
             listener = null;
         }
     }
@@ -69,7 +69,7 @@ public class SNMPListener {
         String ip = e.getSubject().getPeer().getAddress();
         VarbindCollection result = e.getSubject().getVarbinds();
 
-        GUI.getInstance().info("Neuer Trap/Inform von " + ip + "!");
+        GUI.getLogger().info("Neuer Trap/Inform von " + ip + "!");
 
         GUI.getInstance().addListenerResult("Results", ip, result);
 

@@ -2,6 +2,7 @@ package it.duck.gui;
 
 import it.duck.gui.elements.*;
 import it.duck.gui.utility.AlertUtility;
+import it.duck.gui.utility.Logger;
 import it.duck.scanner.Scanner;
 import it.duck.scanner.StandardSettings;
 import it.duck.scanner.listener.SNMPListener;
@@ -11,8 +12,6 @@ import javafx.scene.control.*;
 import org.soulwing.snmp.VarbindCollection;
 
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class GUI implements Initializable {
@@ -38,6 +37,8 @@ public class GUI implements Initializable {
     private final Map<String, CommunityTab> listenerCommunityTabs = new HashMap<>();
     private final SNMPListener listener = new SNMPListener();
     private static GUI INSTANCE;
+
+    private static final Logger LOGGER = new Logger();;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -91,19 +92,25 @@ public class GUI implements Initializable {
         List<String> oids = getSettingOIDs();
         List<String> communities = combo_Community.getSelectedCommunities();
 
+
+        if(firstIP == null) {
+            AlertUtility.showError("Es muss mindestens eine IP angegeben werden!");
+            return;
+        }
+
         if(communities.isEmpty()) {
             AlertUtility.showError("Es muss mindestens eine Community ausgewählt sein!");
             return;
         }
 
         if(endIP == null && mask == -1) {
-            info("IP " + firstIP + " wird gescannt!");
+            LOGGER.info("IP " + firstIP + " wird gescannt!");
             Scanner.scanIP(firstIP, mibs, oids, communities, useGet);
         } else if(endIP == null) {
-            info("Netzwerk " + firstIP + "/" + mask + " wird gescannt!");
+            LOGGER.info("Netzwerk " + firstIP + "/" + mask + " wird gescannt!");
             Scanner.scanNetwork(firstIP, mask, mibs, oids, communities, useGet);
         } else {
-            info("Bereich " + firstIP + " - " + endIP + " wird gescannt!");
+            LOGGER.info("Bereich " + firstIP + " - " + endIP + " wird gescannt!");
             Scanner.scanNetwork(firstIP, endIP, mibs, oids, communities, useGet);
         }
     }
@@ -144,40 +151,19 @@ public class GUI implements Initializable {
         });
     }
 
-
-    public void log(String message) {
-        Platform.runLater(() -> {
-            if(tabPane.getSelectionModel().getSelectedItem() != null) {
-                String text = tabPane.getSelectionModel().getSelectedItem().getText();
-                if(text.equalsIgnoreCase("Scan")) {
-                    txt_Console.appendText(message + "\n");
-                } else if(text.equalsIgnoreCase("Trap Server")) {
-                    txt_ListenerConsole.appendText(message + "\n");
-                }
+    public TextArea getConsole() {
+        if(tabPane.getSelectionModel().getSelectedItem() != null) {
+            String text = tabPane.getSelectionModel().getSelectedItem().getText();
+            if(text.equalsIgnoreCase("Trap Server")) {
+                return txt_ListenerConsole;
             }
-        });
-    }
+        }
 
-    public void info(String message) {
-        log("[INFO][" + getDateAsString() + "] " + message);
-    }
-
-    public void warning(String message) {
-        log("[WARNUNG][" + getDateAsString() + "] " + message);
-    }
-
-    public void error(String message) {
-        log("[FEHLER][" + getDateAsString() + "] " + message);
+        return txt_Console;
     }
 
 
-    private String getDateAsString() {
-        LocalDateTime dateTime = LocalDateTime.now();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM HH:mm:ss");
-
-        return dateTime.format(formatter);
-    }
 
 
     public List<String> getSettingMIBs() {
@@ -195,5 +181,9 @@ public class GUI implements Initializable {
 
     public static GUI getInstance() {
         return INSTANCE;
+    }
+
+    public static Logger getLogger() {
+        return LOGGER;
     }
 }
